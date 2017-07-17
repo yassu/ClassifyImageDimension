@@ -13,19 +13,18 @@ COLOR_BYTE = 3
 
 
 def load_images(path):
-    files = glob.glob(os.path.join(path, '*/*.png'))
+    filenames = glob.glob(os.path.join(path, '*/*.png'))
     images = np.ndarray(
         (
-            len(files), IMAGE_SIZE, IMAGE_SIZE,
+            len(filenames), IMAGE_SIZE, IMAGE_SIZE,
             COLOR_BYTE), dtype=np.int)
-    labels = np.ndarray(len(files), dtype=np.int)
+    labels = np.ndarray(len(filenames), dtype=np.int)
 
-    for idx, file in enumerate(files):
+    for j, file in enumerate(filenames):
         image = io.imread(file)
-        images[idx] = image
+        images[j] = image
 
-        label = [os.path.split(os.path.dirname(file))[-1]][0][0]
-        labels[idx] = int(label)
+        labels[j] = int([os.path.split(os.path.dirname(file))[-1]])
 
     flat_data = images.reshape(-1, IMAGE_SIZE * IMAGE_SIZE * COLOR_BYTE)
     images = flat_data.view()
