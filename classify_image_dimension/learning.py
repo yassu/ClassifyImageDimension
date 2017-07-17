@@ -23,8 +23,7 @@ def load_images(path):
     for j, file in enumerate(filenames):
         image = io.imread(file)
         images[j] = image
-
-        labels[j] = int([os.path.split(os.path.dirname(file))[-1]])
+        labels[j] = int([os.path.split(os.path.dirname(file))[-1]][0][0])
 
     flat_data = images.reshape(-1, IMAGE_SIZE * IMAGE_SIZE * COLOR_BYTE)
     images = flat_data.view()
