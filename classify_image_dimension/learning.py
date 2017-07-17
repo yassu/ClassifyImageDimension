@@ -6,7 +6,7 @@ import os.path
 import numpy as np
 import sys
 from skimage import io
-from sklearn import datasets, svm, metrics
+from sklearn import datasets, metrics, tree
 
 IMAGE_SIZE = 100
 COLOR_BYTE = 3
@@ -14,8 +14,10 @@ COLOR_BYTE = 3
 
 def load_images(path):
     files = glob.glob(os.path.join(path, '*/*.png'))
-    images = np.ndarray((len(files), IMAGE_SIZE, IMAGE_SIZE,
-        COLOR_BYTE), dtype=np.int)
+    images = np.ndarray(
+        (
+            len(files), IMAGE_SIZE, IMAGE_SIZE,
+            COLOR_BYTE), dtype=np.int)
     labels = np.ndarray(len(files), dtype=np.int)
 
     for idx, file in enumerate(files):
@@ -40,7 +42,10 @@ if __name__ == '__main__':
 
     train = load_images(train_path)
 
-    classifier = svm.LinearSVC()
+    # TODO: criterion='entropy' or 'gini', max_depth=3 or 5のうち
+    # もっとも上手くいったのでこの値にした.(Accuracy: 65.5%)
+    # 後でハイパーパラメタ用のデータ・セットを作ってテストし直したい
+    classifier = tree.DecisionTreeClassifier(max_depth=5, criterion='entropy')
     classifier.fit(train.data, train.target)
 
     test = load_images(test_path)
