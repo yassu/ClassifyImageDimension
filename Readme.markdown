@@ -12,9 +12,14 @@ png images for each dimensions.
 
 And run
 
+```
+$ python classify_image_dimension/crop.py {image-path}
+```
+
+for all images and
 
 ```
-python classify_image_dimension/learning.py data/train_data/ data/test_data/
+$ python classify_image_dimension/learning.py data/train_data/ data/test_data/
 ```
 
 Command.
