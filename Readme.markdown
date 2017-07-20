@@ -5,21 +5,78 @@ This is a program to learn machine learning.
 
 This programming will provide feature that classify image 2-dim or 3-dim image.
 
-# How to use
+## How to use
 
-Put data/test/2d/, data/test/3d/, data/train/2d and data/test/3d directory into
-png images for each dimensions.
-
-And run
+Most simple how to use is just
 
 ```
-$ python classify_image_dimension/crop.py {image-path}
+$ classify_image_dimension {image-path}
+2d
 ```
 
-for all images and
+If you indicate directory as `{image-path}`, you obtain accuracy, precision,
+recall and f-measure value.
+
+Other simple how to use is
 
 ```
-$ python classify_image_dimension/learning.py data/train_data/ data/test_data/
+$ classify_image_dimension {training-image-path} {test-image-path}
 ```
 
-Command.
+Then, this program trains by `{training-image-path}`, puts data of classifier
+at `~/.image_dimension_classifier.pickle` (default) and test by
+`{test-image-path}`.
+
+Note that all image files which this program uses is converted png format
+and cropped at 100x100.
+
+## Option
+
+* --predict
+
+Predict images dimension.
+
+Usage is
+
+```
+$ classify_image_dimension --predict {image-path}
+```
+
+* --train
+
+Train by images and put a pickle file.
+
+Usage is
+
+```
+$ classify_image_dimension --train {image-path}
+```
+
+* --test
+
+Test by images.
+
+Usage is
+
+```
+$ classify_image_dimension --test {image-path}
+```
+
+* -f, --pickle-filename
+
+Indicate pickle file used by this program.
+When this program uses the classifier, this pickle file is used
+and saves it, this is used.
+
+Usage is
+
+```
+$ classify_image_dimension ... --pickle-filename {pickle-filename}
+```
+
+* --debug
+
+Show all detailed error which this program is occured.
+
+When you use this option, python error is outputted.
+If you didn't use python, this might not be intuitive.
