@@ -3,7 +3,7 @@ Classify Image Dimension
 
 This is a program to learn machine learning.
 
-This programming will provide feature that classify image 2-dim or 3-dim image.
+This programming will provide feature that classify 2-dim image or 3-dim image.
 
 ## How to use
 
