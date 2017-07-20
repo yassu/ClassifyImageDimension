@@ -30,6 +30,18 @@ at `~/.image_dimension_classifier.pickle` (default) and test by
 Note that all image files which this program uses is converted png format
 and cropped at 100x100.
 
+## Todo
+
+- [ ] `--predict` Option
+    - [ ] Use `~/.image_dimension_classifier.pickle`
+- [ ] `--train` Option
+- [ ] `--test` Option
+- [ ] `-f` or `--pickle-filename` Option
+- [ ] flake8
+- [ ] write setup.py
+- [ ] publish by pypi
+- [ ] use travis
+
 ## Option
 
 * --predict
