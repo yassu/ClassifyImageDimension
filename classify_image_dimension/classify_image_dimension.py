@@ -3,6 +3,7 @@
 
 import glob
 import os.path
+import pickle
 import numpy as np
 import sys
 from skimage import io
@@ -21,7 +22,9 @@ def load_images(path):
             image,
             orientations=9,
             pixels_per_cell=(5, 5),
-            cells_per_block=(5, 5))
+            cells_per_block=(5, 5),
+            block_norm='L2-Hys'
+        )
         labels[j] = int([os.path.split(os.path.dirname(file))[-1]][0][0])
 
     return datasets.base.Bunch(
