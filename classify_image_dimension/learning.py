@@ -45,6 +45,7 @@ if __name__ == '__main__':
     test = load_images(test_path)
     predicted = classifier.predict(test.data)
 
-    print("Confusion matrix:\n%s" % metrics.confusion_matrix(
-        test.target, predicted))
-    print("Accuracy:\n%s" % metrics.accuracy_score(test.target, predicted))
+    print("Confusion matrix:{}".format(
+        metrics.confusion_matrix(test.target, predicted)))
+    print("Accuracy:{}".format(
+        metrics.accuracy_score(test.target, predicted)))
