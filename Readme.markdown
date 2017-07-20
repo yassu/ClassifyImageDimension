@@ -35,7 +35,6 @@ and cropped at 100x100.
 - [ ] `--predict` Option
     - [ ] Use `~/.image_dimension_classifier.pickle`
 - [ ] `--train` Option
-- [ ] `--test` Option
 - [ ] `-f` or `--pickle-filename` Option
 - [ ] flake8
 - [ ] write setup.py
@@ -62,16 +61,6 @@ Usage is
 
 ```
 $ classify_image_dimension --train {image-path}
-```
-
-* --test
-
-Test by images.
-
-Usage is
-
-```
-$ classify_image_dimension --test {image-path}
 ```
 
 * -f, --pickle-filename
