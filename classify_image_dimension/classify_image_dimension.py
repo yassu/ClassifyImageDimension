@@ -16,8 +16,8 @@ def load_images(path):
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
     labels = np.ndarray(len(filenames), dtype=np.int)
 
-    for j, file in enumerate(filenames):
-        image = io.imread(file, as_grey=True)
+    for j, filename in enumerate(filenames):
+        image = io.imread(filename, as_grey=True)
         hogs[j] = hog(
             image,
             orientations=9,
@@ -25,7 +25,7 @@ def load_images(path):
             cells_per_block=(5, 5),
             block_norm='L2-Hys'
         )
-        labels[j] = int([os.path.split(os.path.dirname(file))[-1]][0][0])
+        labels[j] = int([os.path.split(os.path.dirname(filename))[-1]][0][0])
 
     return datasets.base.Bunch(
         data=hogs,
