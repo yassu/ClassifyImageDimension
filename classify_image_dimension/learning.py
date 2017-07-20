@@ -6,32 +6,28 @@ import os.path
 import numpy as np
 import sys
 from skimage import io
+from skimage.feature import hog
 from sklearn import datasets, metrics, tree
-
-IMAGE_SIZE = 100
-COLOR_BYTE = 3
 
 
 def load_images(path):
     filenames = glob.glob(os.path.join(path, '*/*.png'))
-    images = np.ndarray(
-        (
-            len(filenames), IMAGE_SIZE, IMAGE_SIZE,
-            COLOR_BYTE), dtype=np.int)
+    hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
     labels = np.ndarray(len(filenames), dtype=np.int)
 
     for j, file in enumerate(filenames):
-        image = io.imread(file)
-        images[j] = image
+        image = io.imread(file, as_grey=True)
+        hogs[j] = hog(
+            image,
+            orientations=9,
+            pixels_per_cell=(5, 5),
+            cells_per_block=(5, 5))
         labels[j] = int([os.path.split(os.path.dirname(file))[-1]][0][0])
 
-    flat_data = images.reshape(-1, IMAGE_SIZE * IMAGE_SIZE * COLOR_BYTE)
-    images = flat_data.view()
     return datasets.base.Bunch(
-        data=flat_data,
+        data=hogs,
         target=labels.astype(np.int),
         target_names=np.arange(2),
-        images=images,
         DESCR=None)
 
 
