@@ -5,6 +5,7 @@ from sys import argv
 from os import system
 import os.path
 
+
 def crop(filename):
     dirname = os.path.dirname(filename) + '/'
     basename = os.path.splitext(os.path.basename(filename))[0]
