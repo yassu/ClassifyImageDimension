@@ -106,6 +106,13 @@ def get_parser():
     )
 
     parser.add_argument(
+        '--only-statics',
+        action='store_true',
+        dest='show_only_statics',
+        help='show only statics as result'
+    )
+
+    parser.add_argument(
         '--predict', '-p',
         action='store',
         dest='predicted_path',
@@ -133,12 +140,13 @@ def main(args):
         test = load_images(predicted_filenames)
         predicted = classifier.predict(test.data)
 
-        for filename, predict in zip(predicted_filenames, predicted):
-            text = '{:<{}}: {}d'.format(
-                filename,
-                max(map(len, predicted_filenames)) - 1,
-                predict)
-            print(text)
+        if not args.show_only_statics:
+            for filename, predict in zip(predicted_filenames, predicted):
+                text = '{:<{}}: {}d'.format(
+                    filename,
+                    max(map(len, predicted_filenames)) - 1,
+                    predict)
+                print(text)
 
         view_statics = get_either_show_statics(predicted_filenames)
         if view_statics:
