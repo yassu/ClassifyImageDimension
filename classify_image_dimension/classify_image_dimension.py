@@ -11,6 +11,15 @@ from skimage.feature import hog
 from sklearn import datasets, metrics, ensemble
 
 
+def get_classifier(data, target):
+    classifier = ensemble.RandomForestClassifier(
+        n_estimators=20,
+        max_depth=3,
+        criterion='gini')
+    classifier.fit(data, target)
+    return classifier
+
+
 def load_images(path):
     filenames = glob.glob(os.path.join(path, '*/*.png'))
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
@@ -39,16 +48,7 @@ if __name__ == '__main__':
 
     print('Start to load images')
     train = load_images(train_path)
-
-    # TODO: criterion='entropy' or 'gini', max_depth=3 or 5のうち
-    # もっとも上手くいったのでこの値にした.(Accuracy: 65.5%)
-    # 後でハイパーパラメタ用のデータ・セットを作ってテストし直したい
-    print('Start to make a model')
-    classifier = ensemble.RandomForestClassifier(
-        n_estimators=20,
-        max_depth=3,
-        criterion='gini')
-    classifier.fit(train.data, train.target)
+    classifier = get_classifier(train.data, train.target)
 
     print('Start to test images')
     test = load_images(test_path)
