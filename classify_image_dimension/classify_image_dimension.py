@@ -40,6 +40,7 @@ def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
         return pickle.load(f)
 
 
+# TODO: cropしたりpngにしたりする処理を入れる
 def load_images(path):
     filenames = glob.glob(os.path.join(path, '*/*.png'))
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
@@ -97,7 +98,6 @@ def main(args):
 
         classifier = get_maked_classifiler()
         print('Start to predicted images')
-        # TODO: cropしたりpngにしたりする処理を入れる
         test = load_images(predicted_path)
         print('Start to predict')
         predicted = classifier.predict(test.data)
