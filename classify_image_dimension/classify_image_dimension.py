@@ -130,9 +130,7 @@ def main(args):
             os.path.join(predicted_path, '*/*.png'))
 
         classifier = get_maked_classifiler()
-        print('Start to predicted images')
         test = load_images(predicted_filenames)
-        print('Start to predict')
         predicted = classifier.predict(test.data)
 
         for filename, predict in zip(predicted_filenames, predicted):
