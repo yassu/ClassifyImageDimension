@@ -11,6 +11,9 @@ from skimage.feature import hog
 from sklearn import datasets, metrics, ensemble
 
 
+DEFAULT_PICKLE_FILENAME = '~/.image_dimension_classifier.pickle'
+
+
 def get_classifier(data, target):
     classifier = ensemble.RandomForestClassifier(
         n_estimators=20,
@@ -54,6 +57,11 @@ def main(train_path, test_path):
     print('Start to load images')
     train = load_images(train_path)
     classifier = get_classifier(train.data, train.target)
+
+    with open(
+        os.path.expanduser(DEFAULT_PICKLE_FILENAME),
+            mode='wb') as f:
+        pickle.dump(classifier, f)
 
     print('Start to test images')
     test = load_images(test_path)
