@@ -35,8 +35,8 @@ and cropped at 100x100.
 - [x] `-p, --predict` Option
     - [x] Use `~/.image_dimension_classifier.pickle`
 - [x] `-t, --train` Option
-- [ ] `--only-statics` Option (and write bellow)
-- [ ] `-f` or `--pickle-filename` Option
+- [x] `--only-statics` Option (and write bellow)
+- [x] `-f` or `--pickle-filename` Option
 - [ ] flake8
 - [ ] write setup.py
 - [ ] publish by pypi
@@ -62,6 +62,16 @@ Usage is
 
 ```
 $ classify_image_dimension --train {image-path}
+```
+
+* --only-statics
+
+Show only statics as result of predicted.
+
+Usage is
+
+```
+$ classify_image_dimension --only-statics --predict {image-path}
 ```
 
 * -f, --pickle-filename
