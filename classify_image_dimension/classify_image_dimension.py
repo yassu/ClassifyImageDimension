@@ -45,14 +45,12 @@ def load_images(path):
 
 def show_statics(target, predicted):
     print("Confusion matrix:{}".format(
-        metrics.confusion_matrix(test.target, predicted)))
+        metrics.confusion_matrix(target, predicted)))
     print("Accuracy:{}".format(
-        metrics.accuracy_score(test.target, predicted)))
+        metrics.accuracy_score(target, predicted)))
 
 
-if __name__ == '__main__':
-    train_path, test_path = sys.argv[1], sys.argv[2]
-
+def main(train_path, test_path):
     print('Start to load images')
     train = load_images(train_path)
     classifier = get_classifier(train.data, train.target)
@@ -63,3 +61,8 @@ if __name__ == '__main__':
     predicted = classifier.predict(test.data)
 
     show_statics(test.target, predicted)
+
+
+if __name__ == '__main__':
+    train_path, test_path = sys.argv[1], sys.argv[2]
+    main(train_path, test_path)
