@@ -11,7 +11,11 @@ from skimage.feature import hog
 from sklearn import datasets, metrics, ensemble
 
 
-DEFAULT_PICKLE_FILENAME = '~/.image_dimension_classifier.pickle'
+DEFAULT_PICKLE_FILENAME = os.path.expanduser(
+    '~/.image_dimension_classifier.pickle')
+SYSTEM_PICKLE_FILENAME = os.path.join(
+    os.path.dirname(__file__),
+    '..', 'data', 'image_dimension_classifier.pickle')
 
 
 def get_classifier(data, target):
@@ -21,6 +25,18 @@ def get_classifier(data, target):
         criterion='gini')
     classifier.fit(data, target)
     return classifier
+
+
+def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
+    if os.path.exists(DEFAULT_PICKLE_FILENAME):
+        pickle_filename = DEFAULT_PICKLE_FILENAME
+    else:
+        pickle_filename = SYSTEM_PICKLE_FILENAME
+
+    print(pickle_filename)
+    with open(pickle_filename, mode='rb') as f:
+        # TODO: pickle_filenameが不正な形式のときのエラー処理
+        return pickle.load(f)
 
 
 def load_images(path):
@@ -54,16 +70,18 @@ def show_statics(target, predicted):
 
 
 def main(train_path, predicted_path):
-    print('Start to load images')
-    train = load_images(train_path)
-    classifier = get_classifier(train.data, train.target)
-
-    with open(
-        os.path.expanduser(DEFAULT_PICKLE_FILENAME),
-            mode='wb') as f:
-        pickle.dump(classifier, f)
-
-    print('Start to test images')
+    # print('Start to load images')
+    # train = load_images(train_path)
+    # classifier = get_classifier(train.data, train.target)
+    #
+    # with open(
+    #     os.path.expanduser(DEFAULT_PICKLE_FILENAME),
+    #         mode='wb') as f:
+    #     pickle.dump(classifier, f)
+    #
+    classifier = get_maked_classifiler()
+    print('Start to predicted images')
+    # TODO: cropしたりpngにしたりする処理を入れる
     test = load_images(predicted_path)
     print('Start to predict')
     predicted = classifier.predict(test.data)
