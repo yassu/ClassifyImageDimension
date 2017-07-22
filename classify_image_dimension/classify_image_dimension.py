@@ -10,6 +10,7 @@ import sys
 from skimage import io
 from skimage.feature import hog
 from sklearn import datasets, metrics, ensemble
+from tempfile import TemporaryDirectory
 
 
 DEFAULT_PICKLE_FILENAME = os.path.expanduser(
@@ -45,22 +46,39 @@ def load_images(path):
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
     labels = np.ndarray(len(filenames), dtype=np.int)
 
-    for j, filename in enumerate(filenames):
-        image = io.imread(filename, as_grey=True)
-        hogs[j] = hog(
-            image,
-            orientations=9,
-            pixels_per_cell=(5, 5),
-            cells_per_block=(5, 5),
-            block_norm='L2-Hys'
-        )
-        labels[j] = int([os.path.split(os.path.dirname(filename))[-1]][0][0])
+    with TemporaryDirectory() as tmpdir_name:
+        filenames = crop_filenames(filenames, tmpdir_name)
+
+        for j, filename in enumerate(filenames):
+            image = io.imread(filename, as_grey=True)
+            hogs[j] = hog(
+                image,
+                orientations=9,
+                pixels_per_cell=(5, 5),
+                cells_per_block=(5, 5),
+                block_norm='L2-Hys'
+            )
+            labels[j] = os.path.split(filename)[-1][0]
 
     return datasets.base.Bunch(
         data=hogs,
         target=labels.astype(np.int),
         target_names=np.arange(2),
         DESCR=None)
+
+
+def crop_filenames(filenames, tmpdir_name):
+    tmp_filenames = list()
+    for filename in filenames:
+        basename, ext = os.path.splitext(filename)
+        barename = os.path.splitext(os.path.split(filename)[-1])[0]
+        tmp_barename = '{}_cropped'.format(barename)
+        tmp_filename = os.path.join(tmpdir_name, tmp_barename) + '.png'
+        cmd = 'convert {}{} -crop 100x100+0+0 png24:{}'.format(
+            basename, ext, tmp_filename)
+        os.system(cmd)
+        tmp_filenames.append(tmp_filename)
+    return tmp_filenames
 
 
 def show_statics(target, predicted):
