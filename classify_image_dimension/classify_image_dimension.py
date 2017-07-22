@@ -53,7 +53,7 @@ def show_statics(target, predicted):
         metrics.accuracy_score(target, predicted)))
 
 
-def main(train_path, test_path):
+def main(train_path, predicted_path):
     print('Start to load images')
     train = load_images(train_path)
     classifier = get_classifier(train.data, train.target)
@@ -64,7 +64,7 @@ def main(train_path, test_path):
         pickle.dump(classifier, f)
 
     print('Start to test images')
-    test = load_images(test_path)
+    test = load_images(predicted_path)
     print('Start to predict')
     predicted = classifier.predict(test.data)
 
@@ -72,5 +72,5 @@ def main(train_path, test_path):
 
 
 if __name__ == '__main__':
-    train_path, test_path = sys.argv[1], sys.argv[2]
-    main(train_path, test_path)
+    train_path, predicted_path = sys.argv[1], sys.argv[2]
+    main(train_path, predicted_path)
