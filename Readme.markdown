@@ -10,7 +10,7 @@ This programming will provide feature that classify 2-dim image or 3-dim image.
 Most simple how to use is just
 
 ```
-$ classify_image_dimension {image-path}
+$ classify_image_dimension -p {image-path}
 2d
 ```
 
@@ -20,7 +20,7 @@ recall and f-measure value.
 Other simple how to use is
 
 ```
-$ classify_image_dimension {training-image-path} {test-image-path}
+$ classify_image_dimension -t {training-image-path} -p {test-image-path}
 ```
 
 Then, this program trains by `{training-image-path}`, puts data of classifier
@@ -44,7 +44,7 @@ and cropped at 100x100.
 
 ## Option
 
-* --predict
+* -p, --predict
 
 Predict images dimension.
 
@@ -54,7 +54,7 @@ Usage is
 $ classify_image_dimension --predict {image-path}
 ```
 
-* --train
+* -t, --train
 
 Train by images and put a pickle file.
 
