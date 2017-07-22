@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import argparse
 import glob
 import os.path
 import pickle
@@ -69,7 +70,18 @@ def show_statics(target, predicted):
         metrics.accuracy_score(target, predicted)))
 
 
-def main(train_path, predicted_path):
+def get_parser():
+    parser = argparse.ArgumentParser(description='classify image dimension')
+    parser.add_argument(
+        '--predict', '-p',
+        action='store',
+        dest='predicted_path',
+        help='predict')
+
+    return parser
+
+
+def main(args):
     # print('Start to load images')
     # train = load_images(train_path)
     # classifier = get_classifier(train.data, train.target)
@@ -79,16 +91,21 @@ def main(train_path, predicted_path):
     #         mode='wb') as f:
     #     pickle.dump(classifier, f)
     #
-    classifier = get_maked_classifiler()
-    print('Start to predicted images')
-    # TODO: cropしたりpngにしたりする処理を入れる
-    test = load_images(predicted_path)
-    print('Start to predict')
-    predicted = classifier.predict(test.data)
 
-    show_statics(test.target, predicted)
+    if args.predicted_path:
+        predicted_path = args.predicted_path
+
+        classifier = get_maked_classifiler()
+        print('Start to predicted images')
+        # TODO: cropしたりpngにしたりする処理を入れる
+        test = load_images(predicted_path)
+        print('Start to predict')
+        predicted = classifier.predict(test.data)
+
+        show_statics(test.target, predicted)
 
 
 if __name__ == '__main__':
-    train_path, predicted_path = sys.argv[1], sys.argv[2]
-    main(train_path, predicted_path)
+    parser = get_parser()
+    args = parser.parse_args()
+    main(args)
