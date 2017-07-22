@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import sys
 import glob
 import os.path
 import pickle
@@ -20,7 +21,7 @@ SYSTEM_PICKLE_FILENAME = os.path.join(
 IMAGE_FILE_EXTENSIONS = (
     'jpg', 'JPG',
     'jpeg', 'JPEG',
-    'png', 'JPEG,'
+    'png', 'PNG,'
     'gif', 'GIF'
 )
 
@@ -40,12 +41,15 @@ def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
     else:
         pickle_filename = SYSTEM_PICKLE_FILENAME
 
-    with open(pickle_filename, mode='rb') as f:
-        # TODO: pickle_filenameが不正な形式のときのエラー処理
-        return pickle.load(f)
+    try:
+        with open(pickle_filename, mode='rb') as f:
+            # TODO: pickle_filenameが不正な形式のときのエラー処理
+            return pickle.load(f)
+    except Exception:
+        print('uncorrect pickle format', file=sys.stderr)
+        sys.exit()
 
 
-# TODO: cropしたりpngにしたりする処理を入れる
 def load_images(filenames, with_label=True):
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
     if with_label:
@@ -138,6 +142,9 @@ def get_parser():
 
 def main(args):
     if args.train_path:
+        if not os.path.isdir(args.train_path):
+            print('train path is not found.', file=sys.stderr)
+            sys.exit()
         train = load_images(args.train_path)
         classifier = get_classifier(train.data, train.target)
 
@@ -149,14 +156,20 @@ def main(args):
     if args.predicted_path:
         predicted_path = args.predicted_path
 
-        predicted_filenames = list()
-        for ext in IMAGE_FILE_EXTENSIONS:
-            print(ext)
-            print(glob.glob(
-                os.path.join(predicted_path, '*/*.{}'.format(ext))))
-            for image_filename in (glob.glob(
-                    os.path.join(predicted_path, '*.{}'.format(ext)))):
-                predicted_filenames.append(image_filename)
+        if os.path.isfile(predicted_path):
+            predicted_filenames = [predicted_path]
+        elif os.path.isdir(predicted_path):
+            predicted_filenames = list()
+            for ext in IMAGE_FILE_EXTENSIONS:
+                print(ext)
+                print(glob.glob(
+                    os.path.join(predicted_path, '*/*.{}'.format(ext))))
+                for image_filename in (glob.glob(
+                        os.path.join(predicted_path, '*.{}'.format(ext)))):
+                    predicted_filenames.append(image_filename)
+        else:
+            print('predicted path is not found.', file=sys.stderr)
+            sys.exit()
 
         classifier = get_maked_classifiler()
         view_statics = get_either_show_statics(predicted_filenames)
