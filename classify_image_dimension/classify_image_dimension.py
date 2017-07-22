@@ -34,7 +34,6 @@ def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
     else:
         pickle_filename = SYSTEM_PICKLE_FILENAME
 
-    print(pickle_filename)
     with open(pickle_filename, mode='rb') as f:
         # TODO: pickle_filenameが不正な形式のときのエラー処理
         return pickle.load(f)
@@ -73,6 +72,14 @@ def show_statics(target, predicted):
 
 def get_parser():
     parser = argparse.ArgumentParser(description='classify image dimension')
+
+    parser.add_argument(
+        '--train', '-t',
+        action='store',
+        dest='train_path',
+        help='training'
+    )
+
     parser.add_argument(
         '--predict', '-p',
         action='store',
@@ -83,15 +90,14 @@ def get_parser():
 
 
 def main(args):
-    # print('Start to load images')
-    # train = load_images(train_path)
-    # classifier = get_classifier(train.data, train.target)
-    #
-    # with open(
-    #     os.path.expanduser(DEFAULT_PICKLE_FILENAME),
-    #         mode='wb') as f:
-    #     pickle.dump(classifier, f)
-    #
+    if args.train_path:
+        train = load_images(args.train_path)
+        classifier = get_classifier(train.data, train.target)
+
+        with open(
+            os.path.expanduser(DEFAULT_PICKLE_FILENAME),
+                mode='wb') as f:
+            pickle.dump(classifier, f)
 
     if args.predicted_path:
         predicted_path = args.predicted_path
