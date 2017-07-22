@@ -83,10 +83,16 @@ def load_images(filenames, with_label=True):
 
 
 def show_statics(target, predicted):
-    print("Confusion matrix:{}".format(
-        metrics.confusion_matrix(target, predicted)))
     print("Accuracy:{}".format(
         metrics.accuracy_score(target, predicted)))
+    print("Confusion matrix:{}\n".format(
+        metrics.confusion_matrix(target, predicted)))
+    print("Precision:{}".format(
+        metrics.precision_score(target, predicted, pos_label=3)))
+    print("Recall:{}".format(
+        metrics.recall_score(target, predicted, pos_label=3)))
+    print("F-measure:{}".format(
+        metrics.f1_score(target, predicted, pos_label=3)))
 
 
 def crop_filenames(filenames, tmpdir_name):
