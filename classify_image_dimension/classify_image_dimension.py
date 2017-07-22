@@ -135,6 +135,13 @@ def main(args):
         print('Start to predict')
         predicted = classifier.predict(test.data)
 
+        for filename, predict in zip(predicted_filenames, predicted):
+            text = '{:<{}}: {}d'.format(
+                filename,
+                max(map(len, predicted_filenames)) - 1,
+                predict)
+            print(text)
+
         view_statics = get_either_show_statics(predicted_filenames)
         if view_statics:
             show_statics(test.target, predicted)
