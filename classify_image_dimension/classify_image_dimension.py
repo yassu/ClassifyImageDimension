@@ -17,6 +17,12 @@ DEFAULT_PICKLE_FILENAME = os.path.expanduser(
 SYSTEM_PICKLE_FILENAME = os.path.join(
     os.path.dirname(__file__),
     '..', 'data', 'image_dimension_classifier.pickle')
+IMAGE_FILE_EXTENSIONS = (
+    'jpg', 'JPG',
+    'jpeg', 'JPEG',
+    'png', 'JPEG,'
+    'gif', 'GIF'
+)
 
 
 def get_classifier(data, target):
@@ -40,9 +46,10 @@ def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
 
 
 # TODO: cropしたりpngにしたりする処理を入れる
-def load_images(filenames):
+def load_images(filenames, with_label=True):
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
-    labels = np.ndarray(len(filenames), dtype=np.int)
+    if with_label:
+        labels = np.ndarray(len(filenames), dtype=np.int)
 
     with TemporaryDirectory() as tmpdir_name:
         filenames = crop_filenames(filenames, tmpdir_name)
@@ -56,13 +63,19 @@ def load_images(filenames):
                 cells_per_block=(5, 5),
                 block_norm='L2-Hys'
             )
-            labels[j] = os.path.split(filename)[-1][0]
+            if with_label:
+                labels[j] = os.path.split(filename)[-1][0]
 
-    return datasets.base.Bunch(
-        data=hogs,
-        target=labels.astype(np.int),
-        target_names=np.arange(2),
-        DESCR=None)
+    if with_label:
+        return datasets.base.Bunch(
+            data=hogs,
+            target=labels.astype(np.int),
+            target_names=np.arange(2),
+            DESCR=None)
+    else:
+        return datasets.base.Bunch(
+            data=hogs,
+            DESCR=None)
 
 
 def show_statics(target, predicted):
@@ -135,11 +148,19 @@ def main(args):
 
     if args.predicted_path:
         predicted_path = args.predicted_path
-        predicted_filenames = glob.glob(
-            os.path.join(predicted_path, '*/*.png'))
+
+        predicted_filenames = list()
+        for ext in IMAGE_FILE_EXTENSIONS:
+            print(ext)
+            print(glob.glob(
+                os.path.join(predicted_path, '*/*.{}'.format(ext))))
+            for image_filename in (glob.glob(
+                    os.path.join(predicted_path, '*.{}'.format(ext)))):
+                predicted_filenames.append(image_filename)
 
         classifier = get_maked_classifiler()
-        test = load_images(predicted_filenames)
+        view_statics = get_either_show_statics(predicted_filenames)
+        test = load_images(predicted_filenames, with_label=view_statics)
         predicted = classifier.predict(test.data)
 
         if not args.show_only_statics:
@@ -150,7 +171,6 @@ def main(args):
                     predict)
                 print(text)
 
-        view_statics = get_either_show_statics(predicted_filenames)
         if view_statics:
             show_statics(test.target, predicted)
 
