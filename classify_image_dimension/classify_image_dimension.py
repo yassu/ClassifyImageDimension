@@ -8,7 +8,7 @@ import numpy as np
 import sys
 from skimage import io
 from skimage.feature import hog
-from sklearn import datasets, metrics, tree
+from sklearn import datasets, metrics, ensemble
 
 
 def load_images(path):
@@ -42,7 +42,10 @@ if __name__ == '__main__':
     # TODO: criterion='entropy' or 'gini', max_depth=3 or 5のうち
     # もっとも上手くいったのでこの値にした.(Accuracy: 65.5%)
     # 後でハイパーパラメタ用のデータ・セットを作ってテストし直したい
-    classifier = tree.DecisionTreeClassifier(max_depth=5, criterion='entropy')
+    classifier = ensemble.RandomForestClassifier(
+        n_estimators=20,
+        max_depth=3,
+        criterion='gini')
     classifier.fit(train.data, train.target)
 
     test = load_images(test_path)
