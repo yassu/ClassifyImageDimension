@@ -145,7 +145,14 @@ def main(args):
         if not os.path.isdir(args.train_path):
             print('train path is not found.', file=sys.stderr)
             sys.exit()
-        train = load_images(args.train_path)
+
+        training_filenames = list()
+        for ext in IMAGE_FILE_EXTENSIONS:
+            for image_filename in (glob.glob(
+                        os.path.join(args.train_path, '*.{}'.format(ext)))):
+                training_filenames.append(image_filename)
+
+        train = load_images(training_filenames)
         classifier = get_classifier(train.data, train.target)
 
         with open(
@@ -161,9 +168,6 @@ def main(args):
         elif os.path.isdir(predicted_path):
             predicted_filenames = list()
             for ext in IMAGE_FILE_EXTENSIONS:
-                print(ext)
-                print(glob.glob(
-                    os.path.join(predicted_path, '*/*.{}'.format(ext))))
                 for image_filename in (glob.glob(
                         os.path.join(predicted_path, '*.{}'.format(ext)))):
                     predicted_filenames.append(image_filename)
