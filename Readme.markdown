@@ -32,9 +32,9 @@ and cropped at 100x100.
 
 ## Todo
 
-- [ ] `--predict` Option
-    - [ ] Use `~/.image_dimension_classifier.pickle`
-- [ ] `--train` Option
+- [x] `-p, --predict` Option
+    - [x] Use `~/.image_dimension_classifier.pickle`
+- [ ] `-t, --train` Option
 - [ ] `-f` or `--pickle-filename` Option
 - [ ] flake8
 - [ ] write setup.py
