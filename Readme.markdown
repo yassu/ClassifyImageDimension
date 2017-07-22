@@ -34,7 +34,8 @@ and cropped at 100x100.
 
 - [x] `-p, --predict` Option
     - [x] Use `~/.image_dimension_classifier.pickle`
-- [ ] `-t, --train` Option
+- [x] `-t, --train` Option
+- [ ] `--only-statics` Option (and write bellow)
 - [ ] `-f` or `--pickle-filename` Option
 - [ ] flake8
 - [ ] write setup.py
