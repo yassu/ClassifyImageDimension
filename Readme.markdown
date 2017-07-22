@@ -32,8 +32,8 @@ and cropped at 100x100.
 
 ## Todo
 
-- [ ] `-p, --predict` Option
-    - [ ] Use `~/.image_dimension_classifier.pickle`
+- [x] `-p, --predict` Option
+    - [x] Use `~/.image_dimension_classifier.pickle`
 - [ ] `-t, --train` Option
 - [ ] `-f` or `--pickle-filename` Option
 - [ ] flake8
