@@ -87,6 +87,9 @@ def crop_filenames(filenames, tmpdir_name):
 
 
 def get_either_show_statics(filenames):
+    if len(filenames) <= 1:
+        return False
+
     for filename in filenames:
         filename = os.path.split(filename)[-1]
         if not(filename.startswith('2d') or filename.startswith('3d')):
