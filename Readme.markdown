@@ -75,6 +75,16 @@ Usage is
 $ classify_image_dimension ... --pickle-filename {pickle-filename}
 ```
 
+* --not-convert
+
+Not convert to small png file.
+
+Usasge is
+
+```
+$ classify_image_dimension --not-convert ...
+```
+
 * --debug
 
 Show all detailed error which this program is occured.
