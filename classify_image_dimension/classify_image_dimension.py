@@ -41,8 +41,7 @@ def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
 
 
 # TODO: cropしたりpngにしたりする処理を入れる
-def load_images(path):
-    filenames = glob.glob(os.path.join(path, '*/*.png'))
+def load_images(filenames):
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
     labels = np.ndarray(len(filenames), dtype=np.int)
 
@@ -67,6 +66,13 @@ def load_images(path):
         DESCR=None)
 
 
+def show_statics(target, predicted):
+    print("Confusion matrix:{}".format(
+        metrics.confusion_matrix(target, predicted)))
+    print("Accuracy:{}".format(
+        metrics.accuracy_score(target, predicted)))
+
+
 def crop_filenames(filenames, tmpdir_name):
     tmp_filenames = list()
     for filename in filenames:
@@ -81,11 +87,12 @@ def crop_filenames(filenames, tmpdir_name):
     return tmp_filenames
 
 
-def show_statics(target, predicted):
-    print("Confusion matrix:{}".format(
-        metrics.confusion_matrix(target, predicted)))
-    print("Accuracy:{}".format(
-        metrics.accuracy_score(target, predicted)))
+def get_either_show_statics(filenames):
+    for filename in filenames:
+        filename = os.path.split(filename)[-1]
+        if not(filename.startswith('2d') or filename.startswith('3d')):
+            return False
+    return True
 
 
 def get_parser():
@@ -119,14 +126,18 @@ def main(args):
 
     if args.predicted_path:
         predicted_path = args.predicted_path
+        predicted_filenames = glob.glob(
+            os.path.join(predicted_path, '*/*.png'))
 
         classifier = get_maked_classifiler()
         print('Start to predicted images')
-        test = load_images(predicted_path)
+        test = load_images(predicted_filenames)
         print('Start to predict')
         predicted = classifier.predict(test.data)
 
-        show_statics(test.target, predicted)
+        view_statics = get_either_show_statics(predicted_filenames)
+        if view_statics:
+            show_statics(test.target, predicted)
 
 
 if __name__ == '__main__':
