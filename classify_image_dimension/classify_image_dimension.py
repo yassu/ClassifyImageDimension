@@ -6,7 +6,6 @@ import glob
 import os.path
 import pickle
 import numpy as np
-import sys
 from skimage import io
 from skimage.feature import hog
 from sklearn import datasets, metrics, ensemble

@@ -37,7 +37,7 @@ and cropped at 100x100.
 - [x] `-t, --train` Option
 - [x] `--only-statics` Option (and write bellow)
 - [x] `-f` or `--pickle-filename` Option
-- [ ] flake8
+- [x] flake8
 - [ ] write setup.py
 - [ ] publish by pypi
 - [ ] use travis
