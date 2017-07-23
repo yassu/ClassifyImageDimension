@@ -28,7 +28,7 @@ requires = [
 
 setup(
     name='classify_image_dimension',
-    version='0.0.2',
+    version='0.0.3',
     description='classify images by dimension',
     author='Yassu',
     author_email='mathyassu@gmail.com',
