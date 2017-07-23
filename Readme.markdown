@@ -31,9 +31,6 @@ Then, this program trains by `{training-image-path}`, puts data of classifier
 at `~/.image_dimension_classifier.pickle` (default) and test by
 `{test-image-path}`.
 
-Note that all image files which this program uses is converted png format
-and cropped at 100x100.
-
 ## Todo
 
 - [x] `-p, --predict` Option
@@ -95,6 +92,8 @@ $ classify_image_dimension ... --pickle-filename {pickle-filename}
 * --not-convert
 
 Not convert to small png file.
+
+In the default, all images are converted 100x100 with 8 bit color bytes.
 
 Usasge is
 
