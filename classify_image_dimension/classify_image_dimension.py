@@ -96,6 +96,15 @@ def show_statics(target, predicted):
         metrics.f1_score(target, predicted, pos_label=3)))
 
 
+def show_predicted_images(predicted_filenames, predicted):
+    for filename, predict in zip(predicted_filenames, predicted):
+        text = '{:<{}}: {}d'.format(
+            filename,
+            max(map(len, predicted_filenames)) - 1,
+            predict)
+        print(text)
+
+
 def get_image_filenames(path):
     if os.path.isfile(path):
         return [path]
@@ -207,12 +216,7 @@ def main(args):
         predicted = classifier.predict(test.data)
 
         if not args.show_only_statics:
-            for filename, predict in zip(predicted_filenames, predicted):
-                text = '{:<{}}: {}d'.format(
-                    filename,
-                    max(map(len, predicted_filenames)) - 1,
-                    predict)
-                print(text)
+            show_predicted_images(predicted_filenames, predicted)
 
         if view_statics:
             show_statics(test.target, predicted)
