@@ -28,13 +28,16 @@ requires = [
 
 setup(
     name='classify_image_dimension',
-    version='0.0.1',
+    version='0.0.2',
     description='classify images by dimension',
     author='Yassu',
     author_email='mathyassu@gmail.com',
     url='https://github.com/yassu/ClassifyImageDimension',
     classifiers=classifiers,
     packages=['classify_image_dimension'],
+    package_data={
+        'nbupload': ['data/image_dimension_classifier.pickle'],
+    },
     install_requires=requires,
     entry_points="""
        [console_scripts]
