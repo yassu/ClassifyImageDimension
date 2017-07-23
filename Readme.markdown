@@ -36,7 +36,7 @@ and cropped at 100x100.
     - [x] Use `~/.image_dimension_classifier.pickle`
 - [x] `-t, --train` Option
 - [x] `--only-statics` Option (and write bellow)
-- [x] `-f` or `--pickle-filename` Option
+- [ ] `-f` or `--pickle-filename` Option
 - [x] `--not-convert` Option
 - [ ] `--debug` Option
 - [x] flake8

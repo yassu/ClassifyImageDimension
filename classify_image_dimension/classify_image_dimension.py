@@ -96,6 +96,20 @@ def show_statics(target, predicted):
         metrics.f1_score(target, predicted, pos_label=3)))
 
 
+def get_image_filenames(path):
+    if os.path.isfile(path):
+        return [path]
+    elif os.path.isdir(path):
+        filenames = list()
+        for ext in IMAGE_FILE_EXTENSIONS:
+            for image_filename in (glob.glob(
+                    os.path.join(path, '*.{}'.format(ext)))):
+                filenames.append(image_filename)
+        return filenames
+    else:
+        return None
+
+
 def crop_filenames(filenames, tmpdir_name):
     tmp_filenames = list()
     for filename in filenames:
@@ -157,11 +171,10 @@ def main(args):
             print('train path is not found.', file=sys.stderr)
             sys.exit()
 
-        training_filenames = list()
-        for ext in IMAGE_FILE_EXTENSIONS:
-            for image_filename in (glob.glob(
-                        os.path.join(args.train_path, '*.{}'.format(ext)))):
-                training_filenames.append(image_filename)
+        training_filenames = get_image_filenames(args.train_path)
+        if training_filenames is None:
+            print('training path is not found', file=sys.stderr)
+            sys.exit()
 
         train = load_images(
             training_filenames,
@@ -176,16 +189,9 @@ def main(args):
     if args.predicted_path:
         predicted_path = args.predicted_path
 
-        if os.path.isfile(predicted_path):
-            predicted_filenames = [predicted_path]
-        elif os.path.isdir(predicted_path):
-            predicted_filenames = list()
-            for ext in IMAGE_FILE_EXTENSIONS:
-                for image_filename in (glob.glob(
-                        os.path.join(predicted_path, '*.{}'.format(ext)))):
-                    predicted_filenames.append(image_filename)
-        else:
-            print('predicted path is not found.', file=sys.stderr)
+        predicted_filenames = get_image_filenames(predicted_path)
+        if predicted_filenames is None:
+            print('predicted path is not found', file=sys.stderr)
             sys.exit()
 
         classifier = get_maked_classifiler()
