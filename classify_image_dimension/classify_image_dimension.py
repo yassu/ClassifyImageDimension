@@ -129,19 +129,17 @@ def get_parser():
         dest='train_path',
         help='training'
     )
-
+    parser.add_argument(
+        '--predict', '-p',
+        action='store',
+        dest='predicted_path',
+        help='predict')
     parser.add_argument(
         '--only-stats',
         action='store_true',
         dest='show_only_statics',
         help='show only statics as result'
     )
-
-    parser.add_argument(
-        '--predict', '-p',
-        action='store',
-        dest='predicted_path',
-        help='predict')
 
     return parser
 
