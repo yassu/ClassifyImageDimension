@@ -40,7 +40,7 @@ at `~/.image_dimension_classifier.pickle` (default) and test by
 - [x] `-f` or `--pickle-filename` Option
 - [x] `--not-convert` Option
 - [x] flake8
-- [ ] `--debug` Option
+- [x] `--debug` Option
 - [ ] write test
 - [ ] write setup.py
 - [ ] publish by pypi
