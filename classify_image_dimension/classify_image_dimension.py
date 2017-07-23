@@ -26,7 +26,7 @@ IMAGE_FILE_EXTENSIONS = (
 )
 
 
-def get_classifier(data, target):
+def get_new_classifier(data, target):
     classifier = ensemble.RandomForestClassifier(
         n_estimators=20,
         max_depth=3,
@@ -193,7 +193,7 @@ def main(args):
         train = load_images(
             training_filenames,
             convert_image=not args.not_convert_image)
-        classifier = get_classifier(train.data, train.target)
+        classifier = get_new_classifier(train.data, train.target)
 
         update_pickle_file(
             classifier,
