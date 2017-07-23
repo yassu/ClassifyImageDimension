@@ -35,8 +35,12 @@ def get_new_classifier(data, target):
     return classifier
 
 
-def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
-    if os.path.exists(DEFAULT_PICKLE_FILENAME):
+def get_maked_classifiler(
+        pickle_filename,
+        default_pickle_filename=DEFAULT_PICKLE_FILENAME):
+    if os.path.exists(pickle_filename):
+        pass
+    elif os.path.exists(DEFAULT_PICKLE_FILENAME):
         pickle_filename = DEFAULT_PICKLE_FILENAME
     else:
         pickle_filename = SYSTEM_PICKLE_FILENAME
@@ -133,7 +137,13 @@ def crop_filenames(filenames, tmpdir_name):
     return tmp_filenames
 
 
-def update_pickle_file(classifier, pickle_filename):
+def update_pickle_file(
+        classifier,
+        pickle_filename=None,
+        default_pickle_filename=DEFAULT_PICKLE_FILENAME):
+    if not pickle_filename:
+        pickle_filename = default_pickle_filename
+
     with open(os.path.expanduser(pickle_filename), mode='wb') as f:
         pickle.dump(classifier, f)
 
@@ -163,6 +173,12 @@ def get_parser():
         action='store',
         dest='predicted_path',
         help='predict')
+    parser.add_argument(
+        '--pickle-filename', '-f',
+        action='store',
+        dest='pickle_filename',
+        help='indicate pickle filename'
+    )
     parser.add_argument(
         '--only-stats',
         action='store_true',
@@ -197,6 +213,7 @@ def main(args):
 
         update_pickle_file(
             classifier,
+            args.pickle_filename,
             os.path.expanduser(DEFAULT_PICKLE_FILENAME))
 
     if args.predicted_path:
@@ -207,7 +224,7 @@ def main(args):
             print('predicted path is not found', file=sys.stderr)
             sys.exit()
 
-        classifier = get_maked_classifiler()
+        classifier = get_maked_classifiler(args.pickle_filename)
         view_statics = get_either_show_statics(predicted_filenames)
         test = load_images(
             predicted_filenames,
