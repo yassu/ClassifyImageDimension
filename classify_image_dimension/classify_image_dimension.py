@@ -50,13 +50,14 @@ def get_maked_classifiler(default_pickle_filename=DEFAULT_PICKLE_FILENAME):
         sys.exit()
 
 
-def load_images(filenames, with_label=True):
+def load_images(filenames, with_label=True, convert_image=True):
     hogs = np.ndarray((len(filenames), 57600), dtype=np.float)
     if with_label:
         labels = np.ndarray(len(filenames), dtype=np.int)
 
     with TemporaryDirectory() as tmpdir_name:
-        filenames = crop_filenames(filenames, tmpdir_name)
+        if convert_image:
+            filenames = crop_filenames(filenames, tmpdir_name)
 
         for j, filename in enumerate(filenames):
             image = io.imread(filename, as_grey=True)
@@ -140,6 +141,12 @@ def get_parser():
         dest='show_only_statics',
         help='show only statics as result'
     )
+    parser.add_argument(
+        '--not-convert',
+        action='store_true',
+        dest='not_convert_image',
+        help='not convert image'
+    )
 
     return parser
 
@@ -156,7 +163,9 @@ def main(args):
                         os.path.join(args.train_path, '*.{}'.format(ext)))):
                 training_filenames.append(image_filename)
 
-        train = load_images(training_filenames)
+        train = load_images(
+            training_filenames,
+            convert_image=not args.not_convert_image)
         classifier = get_classifier(train.data, train.target)
 
         with open(
@@ -181,7 +190,10 @@ def main(args):
 
         classifier = get_maked_classifiler()
         view_statics = get_either_show_statics(predicted_filenames)
-        test = load_images(predicted_filenames, with_label=view_statics)
+        test = load_images(
+            predicted_filenames,
+            with_label=view_statics,
+            convert_image=not args.not_convert_image)
         predicted = classifier.predict(test.data)
 
         if not args.show_only_statics:
