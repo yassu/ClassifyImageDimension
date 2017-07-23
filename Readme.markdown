@@ -5,6 +5,10 @@ This is a program to learn machine learning.
 
 This programming will provide feature that classify 2-dim image or 3-dim image.
 
+## Requirements:
+
+- ImageTrick
+
 ## How to use
 
 Most simple how to use is just
