@@ -124,6 +124,11 @@ def crop_filenames(filenames, tmpdir_name):
     return tmp_filenames
 
 
+def update_pickle_file(classifier, pickle_filename):
+    with open(os.path.expanduser(pickle_filename), mode='wb') as f:
+        pickle.dump(classifier, f)
+
+
 def get_either_show_statics(filenames):
     if len(filenames) <= 1:
         return False
@@ -181,10 +186,9 @@ def main(args):
             convert_image=not args.not_convert_image)
         classifier = get_classifier(train.data, train.target)
 
-        with open(
-            os.path.expanduser(DEFAULT_PICKLE_FILENAME),
-                mode='wb') as f:
-            pickle.dump(classifier, f)
+        update_pickle_file(
+            classifier,
+            os.path.expanduser(DEFAULT_PICKLE_FILENAME))
 
     if args.predicted_path:
         predicted_path = args.predicted_path
