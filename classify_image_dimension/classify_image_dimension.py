@@ -38,7 +38,7 @@ def get_new_classifier(data, target):
 def get_maked_classifiler(
         pickle_filename,
         default_pickle_filename=DEFAULT_PICKLE_FILENAME):
-    if os.path.exists(pickle_filename):
+    if pickle_filename is not None and os.path.exists(pickle_filename):
         pass
     elif os.path.exists(DEFAULT_PICKLE_FILENAME):
         pickle_filename = DEFAULT_PICKLE_FILENAME
