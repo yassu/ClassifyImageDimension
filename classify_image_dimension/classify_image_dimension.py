@@ -5,6 +5,7 @@ import argparse
 import sys
 import glob
 import os.path
+import traceback
 import pickle
 import numpy as np
 from skimage import io
@@ -49,9 +50,8 @@ def get_maked_classifiler(
         with open(pickle_filename, mode='rb') as f:
             # TODO: pickle_filenameが不正な形式のときのエラー処理
             return pickle.load(f)
-    except Exception:
-        print('uncorrect pickle format', file=sys.stderr)
-        sys.exit()
+    except Exception as e:
+        raise Exception('error is occured when pickle is loaded.')
 
 
 def load_images(filenames, with_label=True, convert_image=True):
@@ -191,6 +191,12 @@ def get_parser():
         dest='not_convert_image',
         help='not convert image'
     )
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        dest='debug_mode',
+        help='debug mode'
+    )
 
     return parser
 
@@ -198,13 +204,11 @@ def get_parser():
 def main(args):
     if args.train_path:
         if not os.path.isdir(args.train_path):
-            print('train path is not found.', file=sys.stderr)
-            sys.exit()
+            raise FileNotFoundError('train path is not found.')
 
         training_filenames = get_image_filenames(args.train_path)
         if training_filenames is None:
-            print('training path is not found', file=sys.stderr)
-            sys.exit()
+            raise FileNotFoundError('training path is not found')
 
         train = load_images(
             training_filenames,
@@ -221,8 +225,7 @@ def main(args):
 
         predicted_filenames = get_image_filenames(predicted_path)
         if predicted_filenames is None:
-            print('predicted path is not found', file=sys.stderr)
-            sys.exit()
+            raise FileNotFoundError('predicted path is not found')
 
         classifier = get_maked_classifiler(args.pickle_filename)
         view_statics = get_either_show_statics(predicted_filenames)
@@ -240,4 +243,12 @@ def main(args):
 
 
 if __name__ == '__main__':
-    main(get_parser().parse_args())
+    args = get_parser().parse_args()
+    try:
+        main(args)
+    except Exception as e:
+        print("Error is occured.", file=sys.stderr)
+        if args.debug_mode:
+            traceback.print_exc()
+        else:
+            print(e, file=sys.stderr)
