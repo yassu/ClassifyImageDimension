@@ -201,54 +201,54 @@ def get_parser():
     return parser
 
 
-def main(args):
-    if args.train_path:
-        if not os.path.isdir(args.train_path):
-            raise FileNotFoundError('train path is not found.')
-
-        training_filenames = get_image_filenames(args.train_path)
-        if training_filenames is None:
-            raise FileNotFoundError('training path is not found')
-
-        train = load_images(
-            training_filenames,
-            convert_image=not args.not_convert_image)
-        classifier = get_new_classifier(train.data, train.target)
-
-        update_pickle_file(
-            classifier,
-            args.pickle_filename,
-            os.path.expanduser(DEFAULT_PICKLE_FILENAME))
-
-    if args.predicted_path:
-        predicted_path = args.predicted_path
-
-        predicted_filenames = get_image_filenames(predicted_path)
-        if predicted_filenames is None:
-            raise FileNotFoundError('predicted path is not found')
-
-        classifier = get_maked_classifiler(args.pickle_filename)
-        view_statics = get_either_show_statics(predicted_filenames)
-        test = load_images(
-            predicted_filenames,
-            with_label=view_statics,
-            convert_image=not args.not_convert_image)
-        predicted = classifier.predict(test.data)
-
-        if not args.show_only_statics:
-            show_predicted_images(predicted_filenames, predicted)
-
-        if view_statics:
-            show_statics(test.target, predicted)
-
-
-if __name__ == '__main__':
+def main():
     args = get_parser().parse_args()
     try:
-        main(args)
+        if args.train_path:
+            if not os.path.isdir(args.train_path):
+                raise FileNotFoundError('train path is not found.')
+
+            training_filenames = get_image_filenames(args.train_path)
+            if training_filenames is None:
+                raise FileNotFoundError('training path is not found')
+
+            train = load_images(
+                training_filenames,
+                convert_image=not args.not_convert_image)
+            classifier = get_new_classifier(train.data, train.target)
+
+            update_pickle_file(
+                classifier,
+                args.pickle_filename,
+                os.path.expanduser(DEFAULT_PICKLE_FILENAME))
+
+        if args.predicted_path:
+            predicted_path = args.predicted_path
+
+            predicted_filenames = get_image_filenames(predicted_path)
+            if predicted_filenames is None:
+                raise FileNotFoundError('predicted path is not found')
+
+            classifier = get_maked_classifiler(args.pickle_filename)
+            view_statics = get_either_show_statics(predicted_filenames)
+            test = load_images(
+                predicted_filenames,
+                with_label=view_statics,
+                convert_image=not args.not_convert_image)
+            predicted = classifier.predict(test.data)
+
+            if not args.show_only_statics:
+                show_predicted_images(predicted_filenames, predicted)
+
+            if view_statics:
+                show_statics(test.target, predicted)
     except Exception as e:
         print("Error is occured.", file=sys.stderr)
         if args.debug_mode:
             traceback.print_exc()
         else:
             print(e, file=sys.stderr)
+
+
+if __name__ == '__main__':
+    main()
