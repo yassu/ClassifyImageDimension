@@ -66,14 +66,14 @@ Usage is
 $ classify_image_dimension --train {image-path}
 ```
 
-* --only-statics
+* --only-stats
 
 Show only statics as result of predicted.
 
 Usage is
 
 ```
-$ classify_image_dimension --only-statics --predict {image-path}
+$ classify_image_dimension --only-stats --predict {image-path}
 ```
 
 * -f, --pickle-filename

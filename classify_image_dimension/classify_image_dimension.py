@@ -85,7 +85,7 @@ def load_images(filenames, with_label=True):
 def show_statics(target, predicted):
     print("Accuracy:{}".format(
         metrics.accuracy_score(target, predicted)))
-    print("Confusion matrix:{}\n".format(
+    print("Confusion matrix:\n{}".format(
         metrics.confusion_matrix(target, predicted)))
     print("Precision:{}".format(
         metrics.precision_score(target, predicted, pos_label=3)))
@@ -131,7 +131,7 @@ def get_parser():
     )
 
     parser.add_argument(
-        '--only-statics',
+        '--only-stats',
         action='store_true',
         dest='show_only_statics',
         help='show only statics as result'
