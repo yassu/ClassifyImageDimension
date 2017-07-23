@@ -39,8 +39,9 @@ at `~/.image_dimension_classifier.pickle` (default) and test by
 - [x] `--only-statics` Option (and write bellow)
 - [x] `-f` or `--pickle-filename` Option
 - [x] `--not-convert` Option
-- [ ] `--debug` Option
 - [x] flake8
+- [ ] `--debug` Option
+- [ ] write test
 - [ ] write setup.py
 - [ ] publish by pypi
 - [ ] use travis
