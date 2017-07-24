@@ -42,8 +42,8 @@ at `~/.image_dimension_classifier.pickle` (default) and test by
 - [x] flake8
 - [x] `--debug` Option
 - [ ] write test
-- [ ] write setup.py
-- [ ] publish by pypi
+- [x] write setup.py
+- [x] publish by pypi
 - [ ] use travis
 
 ## Option
