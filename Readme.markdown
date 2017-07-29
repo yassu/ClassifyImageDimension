@@ -31,20 +31,11 @@ Then, this program trains by `{training-image-path}`, puts data of classifier
 at `~/.image_dimension_classifier.pickle` (default) and test by
 `{test-image-path}`.
 
-## Todo
+## Instration
 
-- [x] `-p, --predict` Option
-    - [x] Use `~/.image_dimension_classifier.pickle`
-- [x] `-t, --train` Option
-- [x] `--only-statics` Option (and write bellow)
-- [x] `-f` or `--pickle-filename` Option
-- [x] `--not-convert` Option
-- [x] flake8
-- [x] `--debug` Option
-- [ ] write test
-- [x] write setup.py
-- [x] publish by pypi
-- [ ] use travis
+```
+$ python setup.py install
+```
 
 ## Option
 
